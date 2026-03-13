@@ -1,0 +1,22 @@
+{
+  "servers": {
+    "second-brain": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["-m", "second_brain.server"],
+      "env": {}
+    },
+    "ado": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@azure-devops/mcp", "${input:ado_org}", "--authentication", "azcli"]
+    }
+  },
+  "inputs": [
+    {
+      "id": "ado_org",
+      "description": "Azure DevOps organization name",
+      "type": "promptString"
+    }
+  ]
+}

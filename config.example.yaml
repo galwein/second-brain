@@ -1,0 +1,21 @@
+# Second Brain Configuration
+stores:
+  personal:
+    type: github
+    path: ~/second-brain-data/personal
+    github_repo: ""  # e.g., "username/second-brain-personal"
+    github_token: ""  # or use GH_TOKEN env var
+  work:
+    type: local
+    path: ~/second-brain-data/work
+
+# Telegram bot for mobile personal capture
+telegram:
+  bot_token: ""  # from @BotFather
+  allowed_users: []  # Telegram user IDs allowed to use the bot
+
+# Microsoft Graph API for Teams/OneDrive/SharePoint
+microsoft:
+  client_id: ""
+  tenant_id: ""
+  # Uses device code flow for authentication
