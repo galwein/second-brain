@@ -1,7 +1,7 @@
-"""Connection-finding helpers for Copilot-native AI.
+"""Connection-finding context formatter.
 
-Instead of calling an external LLM, these helpers format items
-so Copilot can identify connections between them.
+Formats items so Copilot can identify connections between them.
+No LLM calls — Copilot does the reasoning.
 """
 from second_brain.models import Item
 

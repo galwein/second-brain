@@ -313,7 +313,7 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
     try:
         from second_brain.tools.crud import add_item, get_item, list_items, move_item, search
         from second_brain.tools.para import get_inbox, categorize, summarize, find_connections, dashboard
-        from second_brain.tools.sync import sync_teams, sync_onedrive, telegram_status, review_sprint, sync_ado, sync_bookmarks, sync_calendar
+        from second_brain.tools.sync import sync_teams, sync_onedrive, review_sprint, sync_ado, sync_bookmarks, sync_calendar
 
         handlers = {
             "add_item": add_item,
@@ -332,7 +332,6 @@ async def call_tool(name: str, arguments: dict) -> list[TextContent]:
             "sync_ado": sync_ado,
             "sync_bookmarks": sync_bookmarks,
             "sync_calendar": sync_calendar,
-            "telegram_status": telegram_status,
         }
 
         handler = handlers.get(name)

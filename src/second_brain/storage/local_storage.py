@@ -45,8 +45,6 @@ def _item_to_frontmatter(item: Item) -> str:
     }
     if item.meta.summary:
         metadata["summary"] = item.meta.summary
-    if item.meta.related:
-        metadata["related"] = item.meta.related
 
     post = frontmatter.Post(item.content, **metadata)
     return frontmatter.dumps(post)
@@ -69,10 +67,6 @@ def _frontmatter_to_item(rel_path: str, raw: str) -> Item:
     if not isinstance(meta_dict.get("tags"), list):
         meta_dict["tags"] = []
 
-    # Ensure related is a list
-    if not isinstance(meta_dict.get("related"), list):
-        meta_dict["related"] = []
-
     meta = ItemMeta(
         title=meta_dict.get("title", Path(rel_path).stem),
         source=meta_dict.get("source", "manual"),
@@ -82,7 +76,6 @@ def _frontmatter_to_item(rel_path: str, raw: str) -> Item:
         created=meta_dict["created"],
         updated=meta_dict["updated"],
         summary=meta_dict.get("summary", ""),
-        related=meta_dict["related"],
     )
     return Item(meta=meta, content=post.content, path=rel_path)
 

@@ -42,7 +42,6 @@ def _item_to_frontmatter(item: Item) -> str:
         "created": item.meta.created.isoformat(),
         "updated": item.meta.updated.isoformat(),
         "summary": item.meta.summary,
-        "related": item.meta.related,
     }
     post = frontmatter.Post(item.content, **metadata)
     return frontmatter.dumps(post)
@@ -60,7 +59,6 @@ def _frontmatter_to_item(rel_path: str, raw: str) -> Item:
         created=_parse_dt(post.get("created")),
         updated=_parse_dt(post.get("updated")),
         summary=post.get("summary", ""),
-        related=post.get("related", []),
     )
     return Item(meta=meta, content=post.content, path=rel_path)
 
@@ -110,16 +108,6 @@ class GitHubStorage(BaseStorage):
         status = self._git("status", "--porcelain")
         if status.stdout.strip():
             self._git("commit", "-m", message)
-
-    # -- public git operations ----------------------------------------------
-
-    def push(self) -> None:
-        """Push local commits to the remote."""
-        self._git("push")
-
-    def pull(self) -> None:
-        """Pull remote changes into the local clone."""
-        self._git("pull", "--rebase")
 
     # -- BaseStorage implementation -----------------------------------------
 

@@ -5,12 +5,11 @@ build-backend = "hatchling.build"
 [project]
 name = "second-brain"
 version = "0.1.0"
-description = "A Second Brain powered by MCP, AI agents, and smart connectors."
+description = "A Second Brain powered by MCP and smart connectors, following PARA methodology."
 requires-python = ">=3.11"
 dependencies = [
     "mcp[cli]",
     "PyGithub",
-    "python-telegram-bot",
     "pyyaml",
     "python-frontmatter",
     "python-docx",
@@ -26,6 +25,10 @@ second-brain = "second_brain.server:main"
 dev = [
     "pytest",
     "ruff",
+]
+teams = [
+    "msgraph-sdk",
+    "azure-identity",
 ]
 
 [tool.hatch.build.targets.wheel]
