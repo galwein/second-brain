@@ -22,14 +22,13 @@ class StoreType(Enum):
 class ItemMeta:
     """Metadata for a Second Brain item (stored as YAML frontmatter)."""
     title: str
-    source: str = "manual"  # manual, telegram, teams, onedrive, etc.
+    source: str = "manual"  # manual, teams, onedrive, bookmarks, ado, etc.
     store: str = "personal"  # personal or work
     category: str = "Inbox"  # PARA category path, e.g., "Projects/my-project"
     tags: list[str] = field(default_factory=list)
     created: datetime = field(default_factory=datetime.now)
     updated: datetime = field(default_factory=datetime.now)
     summary: str = ""
-    related: list[str] = field(default_factory=list)  # paths to related items
 
 
 @dataclass

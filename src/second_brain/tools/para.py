@@ -65,7 +65,7 @@ async def categorize(arguments: dict) -> str:
                 folders.add(f"{parts[0]}/{parts[1]}")
         existing.extend(sorted(folders))
 
-    from second_brain.agents.categorizer import format_categorization_context
+    from second_brain.formatters.categorizer import format_categorization_context
     return format_categorization_context(item, existing_categories=existing if existing else None)
 
 
@@ -82,7 +82,7 @@ async def summarize(arguments: dict) -> str:
             return f"❌ Unknown store: {sid}"
         try:
             item = await stores[sid].read_item(path)
-            from second_brain.agents.summarizer import format_item_for_summary
+            from second_brain.formatters.summarizer import format_item_for_summary
             return format_item_for_summary(item)
         except FileNotFoundError:
             return f"❌ Item not found: {path}"
@@ -96,7 +96,7 @@ async def summarize(arguments: dict) -> str:
         if not all_items:
             return f"🔍 No items found about '{topic}' to summarize."
 
-        from second_brain.agents.summarizer import format_topic_for_summary
+        from second_brain.formatters.summarizer import format_topic_for_summary
         return format_topic_for_summary(topic, all_items)
     else:
         return "Please provide either a 'path' to summarize a specific item, or a 'topic' to synthesize across items."
@@ -137,7 +137,7 @@ async def find_connections(arguments: dict) -> str:
     if not related_items:
         return f"🔗 No potentially related items found for '{item.meta.title}'."
 
-    from second_brain.agents.connector_agent import format_connection_context
+    from second_brain.formatters.connector_agent import format_connection_context
     return format_connection_context(item, related_items)
 
 

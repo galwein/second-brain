@@ -9,11 +9,6 @@ stores:
     type: local
     path: ~/second-brain-data/work
 
-# Telegram bot for mobile personal capture
-telegram:
-  bot_token: ""  # from @BotFather
-  allowed_users: []  # Telegram user IDs allowed to use the bot
-
 # Microsoft Graph API for Teams/OneDrive/SharePoint
 microsoft:
   client_id: ""

@@ -4,7 +4,6 @@ from datetime import datetime
 
 from second_brain.connectors.teams import TeamsConnector
 from second_brain.connectors.onedrive import OneDriveConnector
-from second_brain.connectors.telegram_bot import TelegramBotConnector
 from second_brain.tools.crud import get_stores
 
 logger = logging.getLogger("second-brain.tools.sync")
@@ -19,7 +18,6 @@ def _get_connectors() -> dict:
         _connectors = {
             "teams": TeamsConnector(),
             "onedrive": OneDriveConnector(),
-            "telegram": TelegramBotConnector(),
         }
     return _connectors
 
@@ -129,18 +127,6 @@ async def sync_bookmarks(arguments: dict) -> str:
     else:
         lines.append(f"\n📚 Total: {total} bookmarks synced.")
 
-    return "\n".join(lines)
-
-
-async def telegram_status(arguments: dict) -> str:
-    """Get the Telegram bot status."""
-    connectors = _get_connectors()
-    telegram: TelegramBotConnector = connectors["telegram"]
-    status = await telegram.get_status()
-
-    lines = ["🤖 **Telegram Bot Status:**\n"]
-    for key, value in status.items():
-        lines.append(f"  **{key}:** {value}")
     return "\n".join(lines)
 
 

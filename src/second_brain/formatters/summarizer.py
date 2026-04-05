@@ -1,7 +1,7 @@
-"""Summarization helpers for Copilot-native AI.
+"""Summarization context formatter.
 
-Instead of calling an external LLM, these helpers format item content
-for Copilot to summarize directly.
+Formats item content for Copilot to summarize. No LLM calls — Copilot
+does the reasoning.
 """
 from second_brain.models import Item
 

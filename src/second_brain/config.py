@@ -23,12 +23,6 @@ class StoreConfig:
 
 
 @dataclass
-class TelegramConfig:
-    bot_token: str
-    allowed_users: list[int] = field(default_factory=list)
-
-
-@dataclass
 class MicrosoftConfig:
     client_id: str
     tenant_id: str
@@ -37,7 +31,6 @@ class MicrosoftConfig:
 @dataclass
 class Config:
     stores: dict[str, StoreConfig]
-    telegram: TelegramConfig
     microsoft: MicrosoftConfig
 
 
@@ -71,13 +64,6 @@ def load_config(path: Path | None = None) -> Config:
         if "personal" in stores:
             stores["personal"].github_token = token
 
-    # --- telegram ---
-    tg = raw.get("telegram", {})
-    telegram_cfg = TelegramConfig(
-        bot_token=os.environ.get("SECOND_BRAIN_TELEGRAM_TOKEN", tg.get("bot_token", "")),
-        allowed_users=tg.get("allowed_users", []),
-    )
-
     # --- microsoft ---
     ms = raw.get("microsoft", {})
     microsoft_cfg = MicrosoftConfig(
@@ -87,7 +73,6 @@ def load_config(path: Path | None = None) -> Config:
 
     return Config(
         stores=stores,
-        telegram=telegram_cfg,
         microsoft=microsoft_cfg,
     )
 

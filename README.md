@@ -6,9 +6,9 @@ A personal knowledge management system following the [PARA methodology](https://
 
 - **PARA Organization** — Projects, Areas, Resources, Archive structure for all your knowledge
 - **Dual Stores** — Strict separation between personal (GitHub) and work (local) data
-- **AI-Powered** — LLM agents for auto-categorization, summarization, and finding connections
+- **AI-Powered** — Copilot-native categorization, summarization, and connection finding
 - **Copilot Integration** — Use directly from GitHub Copilot via MCP
-- **Mobile Capture** — Telegram bot for capturing notes on the go
+- **Agent Prompts** — Reusable `.prompt.md` agents for inbox triage, daily review, and sync
 - **Work Sync** — Microsoft Teams and OneDrive/SharePoint connectors
 
 ## Architecture
@@ -16,9 +16,9 @@ A personal knowledge management system following the [PARA methodology](https://
 ```
 Copilot (MCP) ←→ MCP Server ←→ Storage Layer
                       ↕              ↕
-              Agent Layer      GitHub / Local FS
+             Formatter Layer    GitHub / Local FS
                       ↕
-              Connectors (Teams, OneDrive, Telegram)
+              Connectors (Teams, OneDrive, ADO)
 ```
 
 ## Quick Start
@@ -61,7 +61,6 @@ nano ~/.config/second-brain/config.yaml
 
 **Optional settings:**
 - `stores.personal.github_repo` — GitHub repo for personal data sync
-- `telegram.bot_token` — Telegram bot token from @BotFather
 - `microsoft.client_id` / `microsoft.tenant_id` — For Teams/OneDrive sync
 
 > **Note:** AI features (categorization, summarization, connection-finding) are handled entirely by GitHub Copilot via MCP — no separate API key is required.
@@ -174,19 +173,14 @@ Your content here...
 
 ## Connectors
 
-### Telegram Bot (Personal)
-1. Create a bot via [@BotFather](https://t.me/BotFather)
-2. Add the token to your config
-3. Add your Telegram user ID to `allowed_users`
-4. Commands: `/note`, `/link`, `/status`, `/help`, or just send text
-
 ### Microsoft Teams (Work)
 1. Register an app in Azure AD
 2. Add `client_id` and `tenant_id` to config
-3. Use `sync_teams` tool — authenticates via device code flow
+3. Install Teams extras: `pip install -e ".[teams]"`
+4. Use `sync_teams` tool — authenticates via device code flow
 
 ### OneDrive/SharePoint (Work)
-1. Uses same Azure AD app as Teams
+1. Ensure OneDrive is mounted locally (macOS: auto-mounts to `~/Library/CloudStorage`)
 2. Use `sync_onedrive` tool
 3. Supports: .docx, .pptx, .xlsx, .pdf, .txt, .md, .csv
 
@@ -195,7 +189,6 @@ Your content here...
 | Variable | Overrides |
 |----------|-----------|
 | `SECOND_BRAIN_GITHUB_TOKEN` | `stores.personal.github_token` |
-| `SECOND_BRAIN_TELEGRAM_TOKEN` | `telegram.bot_token` |
 | `SECOND_BRAIN_MS_CLIENT_ID` | `microsoft.client_id` |
 | `SECOND_BRAIN_MS_TENANT_ID` | `microsoft.tenant_id` |
 
@@ -224,15 +217,16 @@ src/second_brain/
 │   ├── base.py            # Abstract interface
 │   ├── github_storage.py  # Git-backed (personal)
 │   └── local_storage.py   # Local filesystem (work)
-├── agents/                # LLM-powered agents
-│   ├── categorizer.py     # PARA categorization
-│   ├── summarizer.py      # Content summarization
-│   └── connector_agent.py # Connection finding
+├── formatters/            # Context formatters for Copilot reasoning
+│   ├── categorizer.py     # PARA categorization context
+│   ├── summarizer.py      # Content summarization context
+│   └── connector_agent.py # Connection finding context
 ├── connectors/            # Data source connectors
 │   ├── base.py            # Abstract interface
 │   ├── teams.py           # Microsoft Teams
 │   ├── onedrive.py        # OneDrive/SharePoint
-│   └── telegram_bot.py    # Telegram bot
+│   ├── bookmarks.py       # Browser bookmarks (Comet/Edge)
+│   └── ado.py             # Azure DevOps work items
 └── tools/                 # MCP tool implementations
     ├── crud.py            # CRUD operations
     ├── para.py            # PARA-specific tools
